@@ -1,0 +1,29 @@
+package initializers
+
+import (
+	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/app/dependencies"
+	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1"
+	apiV1Status "github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1/status"
+	"github.com/gofiber/fiber/v2"
+)
+
+// InitializeRouter initializes new gin router
+func InitializeRouter(container *dependencies.Container) *fiber.App {
+	r := fiber.New()
+
+	ctrls := buildControllers(container)
+
+	for i := range ctrls {
+		ctrls[i].DefineRoutes(r)
+	}
+
+	return r
+}
+
+func buildControllers(container *dependencies.Container) []apiv1.Controller {
+	return []apiv1.Controller{
+		apiV1Status.NewController(container.BuildInfo),
+		//apiv1Swagger.NewController(),
+
+	}
+}
