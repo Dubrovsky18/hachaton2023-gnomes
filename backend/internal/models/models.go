@@ -13,7 +13,6 @@ type User struct{
 	SecondName string `gorm:"column:second_name" json:"second_name"`
 	Phone string `gorm:"column:phone" json:"phone"`
 	Email string `gorm:"column:email" json:"email"`
-	Date time.Time `gorm:"column:date" json:"date"`
 	Password string `gorm:"column:password" json:"password"`
 }
 
