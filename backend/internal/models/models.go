@@ -11,6 +11,7 @@ import (
 type User struct {
 	Name       string `gorm:"column:name" json:"name"`
 	SecondName string `gorm:"column:second_name" json:"second_name"`
+<<<<<<< HEAD
 	Phone      string `gorm:"column:phone" json:"phone"`
 	Email      string `gorm:"column:email" json:"email"`
 	Password   string `gorm:"column:password" json:"password"`
@@ -18,6 +19,22 @@ type User struct {
 
 type Hidden struct {
 	User User `gorm:"embedded;"`
+=======
+	Phone string `gorm:"column:phone" json:"phone"`
+	Email string `gorm:"column:email" json:"email"`
+	Password string `gorm:"column:password" json:"password"`
+}
+
+type Hidden struct{
+	User User `gorm:"embedded;"`
+}
+
+type Teacher struct{
+	gorm.Model
+	User User `gorm:"embedded;"`
+	Hours int `gorm:"column:hours" json:"hours"`
+	WeekendsDay int `gorm:"column:weekends_day" json:"weekends_day"`
+>>>>>>> dev_dima
 }
 
 type Teacher struct {
@@ -48,6 +65,7 @@ type Student struct {
 
 type Subject struct {
 	gorm.Model
+<<<<<<< HEAD
 	Discipline  string  `gorm:"column:discipline" json:"discipline"`
 	TeacherID   Teacher `gorm:"foreignkey:teacher_id;association_foreignkey:id"`
 	LessonHours int     `gorm:"column:lesson_hours" json:"lesson_hours"`
@@ -57,14 +75,35 @@ type Subject struct {
 type Audience struct {
 	gorm.Model
 	Name string `gorm:"column:name" json:"name"`
+=======
+	Discipline string `gorm:"column:discipline" json:"discipline"`
+	TeacherID Teacher `gorm:"foreignkey:teacher_id;association_foreignkey:id"`
+	LessonHours int	`gorm:"column:lesson_hours" json:"lesson_hours"`
+>>>>>>> dev_dima
 	Type string `gorm:"column:type" json:"type"`
 }
 
 type Schedule struct {
 	gorm.Model
+<<<<<<< HEAD
 	SubjectID  Subject   `gorm:"foreignkey:subject_id;association_foreignkey:id"`
 	AudienceID Audience  `gorm:"foreignkey:audience_id;association_foreignkey:id"`
 	GroupID    Group     `gorm:"foreignkey:group_id;association_foreignkey:id"`
 	Date       time.Time `gorm:"column:date" json:"date"`
 	Time       time.Time `gorm:"column:time" json:"time"`
 }
+=======
+	Name string `gorm:"column:name" json:"name"`
+	Type string `gorm:"column:type" json:"type"`
+}
+
+type Schedule struct{
+	gorm.Model
+	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
+	AudienceID Audience `gorm:"foreignkey:audience_id;association_foreignkey:id"`
+	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id"`
+	Date time.Time `gorm:"column:date" json:"date"`
+	Time time.Time `gorm:"column:time" json:"time"`
+}
+
+>>>>>>> dev_dima
