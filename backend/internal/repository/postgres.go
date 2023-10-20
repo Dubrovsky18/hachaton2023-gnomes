@@ -37,33 +37,8 @@ func NewPostgresRepository(cfg *config.Config) (*postgresRepository, error) {
 
 	pgSvc := &postgresRepository{db: db}
 
-	// err = pgSvc.seeds()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
 	return pgSvc, nil
 }
-
-// func (p *postgresRepository) seeds() error {
-// 	cfg := config.GetConfig()
-
-// 	var user models.User
-// 	result := p.db.Where(models.User{Login: "admin"}).First(&user)
-// 	if result.Error == nil || user.Id != 0 {
-// 		return nil
-// 	}
-
-// 	seedUser := &models.User{
-		
-// 	}
-// 	err = p.db.Create(seedUser)
-// 	if err != nil {
-// 		return err
-// 	}
-
-// 	return nil
-// }
 
 func (pg *postgresRepository) Create(table string, columns_data map[string]interface{}) error{
 	return nil

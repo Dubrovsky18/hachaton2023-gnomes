@@ -8,7 +8,7 @@ import (
 type Repository interface {
 	Create(table string, columns_data map[string]interface{}) error
 	Update(table string, id int, columns_data map[string]interface{}) error
-	Delete(table string, id int) error
+	Delete(table string, id int) error 
 	GetSchedule(columns_args map[string]interface{}) ([]models.Schedule, error)
 	GetUser(table string, id int, email string, phone string) (*models.User, error)
 }
