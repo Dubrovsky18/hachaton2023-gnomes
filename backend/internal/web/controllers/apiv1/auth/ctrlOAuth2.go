@@ -1,46 +1,32 @@
 package auth
 
 import (
-	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/models"
-	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
+	"golang.org/x/oauth2"
 )
 
+const (
+	key                  = "1028434575027-br2d20a7qbuli837iumif8skmp385dqb.apps.googleusercontent.com"
+	sec                  = "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"
+	GOOGLE_AUTH_URI      = "https://accounts.google.com/o/oauth2/auth"
+	GOOGLE_TOKEN_URI     = "https://accounts.google.com/o/oauth2/token"
+	GOOGLE_USER_INFO_URI = "https://www.googleapis.com/oauth2/v1/userinfo"
+)
+
+var GOOGLE_SCOPES = []string{
+	"https://www.googleapis.com/auth/userinfo.email",
+	"https://www.googleapis.com/auth/userinfo.profile",
+}
+
 func (ctrl *Controller) loginOAuth2(c *fiber.Ctx) error {
-	role := c.Params("role")
-	if role == "student" {
-		var input models.Student
-		if err := c.BodyParser(&input); err != nil {
-			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-			return nil
-		}
 
+	conf := &oauth2.Config{
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  GOOGLE_AUTH_URI,
+			TokenURL: GOOGLE_TOKEN_URI,
+		},
 	}
 
-	var ok bool
-	input.Phone, ok = helpers.IsValidRussianPhoneNumber(input.Phone)
-	if !ok {
-		pkg.NewErrorResponse(c, http.StatusBadRequest, "number not in Russian format")
-		return nil
-	}
-
-	_, err := ctrl.studentService.Client.GetUserFromMobile(input.Phone)
-	if err == nil {
-		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
-		return nil
-	}
-
-	uuid, err := ctrl.studentService.Client.CreateUser(input)
-
-	if err != nil {
-		pkg.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return nil
-	}
-
-	pkg.NewJsonInterfaceResponse(c, http.StatusOK, "", "Auth-srv", map[string]interface{}{
-		"id": uuid,
-	})
-
-	return nil
+	authURL := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	return c.Redirect(authURL)
 }

@@ -29,6 +29,50 @@ func (ctrl *Controller) DefineRoutes(r *fiber.App) {
 
 	{
 		oauth2.Post("/login/:role", ctrl.loginOAuth2)
+		oauth2.Get("/")
+	}
+
+	identity := apiVer.Group("/in")
+
+	{
+		student := identity.Group("/student")
+		{
+			student.Get("/profile")
+			student.Put("/profile")
+			student.Get("/schedule")
+		}
+
+		teacher := identity.Group("/teacher")
+		{
+			teacher.Get("/profile")
+			teacher.Put("/profile")
+			teacherSchedule := teacher.Group("/schedule")
+			{
+				// через JWT token определённое расписание
+				teacherSchedule.Get("/")
+				teacherSchedule.Post("/wishes")
+			}
+		}
+
+		admin := identity.Group("/admin")
+		{
+			admin.Get("/profile")
+			admin.Put("/profile")
+
+			adminSchedule := admin.Group("/schedule")
+			{
+				adminSchedule.Get("/")
+				adminSchedule.Post("/generate")
+				adminSchedule.Post("/change")
+				adminSchedule.Get("/wishes")
+			}
+
+			adminCreate := admin.Group("/create")
+			{
+				adminCreate.Post("/student")
+				adminCreate.Post("/teacher")
+			}
+		}
 	}
 
 }

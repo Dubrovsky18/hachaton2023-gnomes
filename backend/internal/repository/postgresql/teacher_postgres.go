@@ -20,12 +20,14 @@ func (p *TeacherPostgres) Create(teacher models.Teacher) error {
 }
 
 func (p *TeacherPostgres) Get(uuid int) (models.Teacher, error) {
-	return p.db.Get(uuid)
+	var teacher models.Teacher
+	result := p.db.Where("id = ?", uuid).First(&teacher)
+	return teacher, result.Error
 }
 
 func (p *TeacherPostgres) Update(teacher models.Teacher) error {
-	//TODO implement me
-	panic("implement me")
+	result := p.db.Updates(teacher)
+	return result.Error
 }
 
 func NewTeacherPostgres(db *gorm.DB) *TeacherPostgres {

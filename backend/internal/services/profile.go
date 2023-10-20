@@ -20,7 +20,7 @@ func (p StudentService) Get(uuid int) (models.Student, error) {
 }
 
 func (p StudentService) GetLogin(login string) (models.Student, error) {
-	return p.repositoryStudent.
+	return p.repositoryStudent.GetLogin(login)
 }
 
 func (p StudentService) Create(student models.Student) error {
