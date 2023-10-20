@@ -16,20 +16,20 @@ type RepositoryStudent interface {
 type RepositoryTeacher interface {
 	Create(teacher models.Teacher) error
 	Get(uuid int) (models.Teacher, error)
-	GetLogin(login string) (models.Student, error)
+	GetLogin(login string) (models.Teacher, error)
 	Update(teacher models.Teacher) error
 }
 
 type RepositoryAdmin interface {
 	Create(admin models.Admin) error
 	Get(uuid int) (models.Admin, error)
-	GetLogin(login string) (models.Student, error)
+	GetLogin(login string) (models.Admin, error)
 	Update(admin models.Admin) error
 }
 
 type RepositorySchedule interface {
 	Create(schedule []models.Schedule) error
-	Get(uuid int) ([]models.Schedule, error)
+	Get() ([]models.Schedule, error)
 	Update(schedule []models.Schedule) error
 }
 

@@ -22,20 +22,34 @@ func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
 			return err
 		}
 
+		session := &fiber.Cookie{
+			Name:   input.User.Name,
+			Value:  "student",
+			MaxAge: 24 * 60 * 60,
+			Path:   "/",
+		}
+		c.Cookie(session)
+
 	} else if role == "teacher" {
 		var input models.Teacher
 		if err := c.BodyParser(&input); err != nil {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 			return nil
 		}
-		teacher, err :=
-	}
+		teacher, err := ctrl.teacherService.GetLogin(input.User.Email)
+		if (err != nil) || (teacher.User.Password != input.User.Password) {
+			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+			return err
+		}
 
-	uuid, err := ctrl.studentService.Client.CreateUser(input)
+		session := &fiber.Cookie{
+			Name:   input.User.Name,
+			Value:  "teacher",
+			MaxAge: 24 * 60 * 60,
+			Path:   "/",
+		}
+		c.Cookie(session)
 
-	if err != nil {
-		pkg.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return nil
 	}
 
 	pkg.NewJsonInterfaceResponse(c, http.StatusOK, "", "Auth-srv", map[string]interface{}{

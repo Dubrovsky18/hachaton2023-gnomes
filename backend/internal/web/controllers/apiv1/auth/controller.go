@@ -9,6 +9,8 @@ import (
 type Controller struct {
 	apiv1.BaseController
 	studentService *services.StudentService
+	teacherService *services.TeacherService
+	adminService   *services.AdminService
 }
 
 func NewController(service *services.StudentService) *Controller {
@@ -29,7 +31,7 @@ func (ctrl *Controller) DefineRoutes(r *fiber.App) {
 
 	{
 		oauth2.Post("/login/:role", ctrl.loginOAuth2)
-		oauth2.Get("/")
+		oauth2.Get("/callback", ctrl.loginOAuth2)
 	}
 
 	identity := apiVer.Group("/in")

@@ -19,6 +19,10 @@ func (p AdminService) Get(uuid int) (models.Admin, error) {
 	return p.repositoryAdmin.Get(uuid)
 }
 
+func (p AdminService) GetLogin(login string) (models.Admin, error) {
+	return p.repositoryAdmin.GetLogin(login)
+}
+
 func (p AdminService) Create(student models.Admin) error {
 	return p.repositoryAdmin.Create(student)
 }

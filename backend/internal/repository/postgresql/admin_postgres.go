@@ -26,8 +26,7 @@ func (p *AdminPostgres) Get(uuid int) (models.Admin, error) {
 }
 
 func (p *AdminPostgres) Update(admin models.Admin) error {
-	result := p.db.Updates(admin)
-	return result.Error
+	return p.db.Updates(admin).Error
 }
 
 func NewAdminPostgres(db *gorm.DB) *AdminPostgres {

@@ -5,25 +5,28 @@ import (
 	"gorm.io/gorm"
 )
 
-
 type StudentPostgres struct {
 	db *gorm.DB
 }
 
 func (p *StudentPostgres) GetLogin(login string) (models.Student, error) {
-	result := p.db.Where("login")
+	var student models.Student
+	result := p.db.Where("Email = ?", login).First(&student)
+	return student, result.Error
 }
 
 func (p *StudentPostgres) Create(student models.Student) error {
-	return p.db.Create
+	return p.db.Create(student).Error
 }
 
 func (p *StudentPostgres) Get(uuid int) (models.Student, error) {
-	return p.db.Get(uuid)
+	var student models.Student
+	result := p.db.Where("id = ?", uuid).First(&student)
+	return student, result.Error
 }
 
 func (p *StudentPostgres) Update(student models.Student) error {
-	return p.db.
+	return p.db.Updates(student).Error
 }
 
 func NewStudentPostgres(db *gorm.DB) *StudentPostgres {

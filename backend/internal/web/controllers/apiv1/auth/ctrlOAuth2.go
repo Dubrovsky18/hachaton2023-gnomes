@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/oauth2"
 )
@@ -18,15 +19,46 @@ var GOOGLE_SCOPES = []string{
 	"https://www.googleapis.com/auth/userinfo.profile",
 }
 
-func (ctrl *Controller) loginOAuth2(c *fiber.Ctx) error {
+var conf = &oauth2.Config{
+	Endpoint: oauth2.Endpoint{
+		AuthURL:  GOOGLE_AUTH_URI,
+		TokenURL: GOOGLE_TOKEN_URI,
+	},
+}
 
-	conf := &oauth2.Config{
-		Endpoint: oauth2.Endpoint{
-			AuthURL:  GOOGLE_AUTH_URI,
-			TokenURL: GOOGLE_TOKEN_URI,
-		},
-	}
+func (ctrl *Controller) loginOAuth2(c *fiber.Ctx) error {
 
 	authURL := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
 	return c.Redirect(authURL)
+}
+
+func (ctrl *Controller) handleOAuth2Callback(c *fiber.Ctx) error {
+	code := c.Query("code")
+
+	token, err := conf.Exchange(c.Context(), code)
+	if err != nil {
+		return err
+	}
+
+	client := conf.Client(c.Context(), token)
+
+	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	var userInfo struct {
+		Email string `json:"email"`
+		// Другие поля, которые вам интересны
+	}
+	err = json.NewDecoder(resp.Body).Decode(&userInfo)
+	if err != nil {
+		return err
+	}
+
+	// Используйте информацию о пользователе по своему усмотрению
+	// Например, сохраните email в сессии или базе данных
+
+	return c.SendString("Successfully authenticated")
 }

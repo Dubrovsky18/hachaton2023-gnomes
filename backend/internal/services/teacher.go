@@ -15,6 +15,10 @@ func NewTeacherService(teacher repository.RepositoryTeacher) *TeacherService {
 	}
 }
 
+func (p TeacherService) GetLogin(login string) (models.Teacher, error) {
+	return p.repositoryTeacher.GetLogin(login)
+}
+
 func (p TeacherService) Get(uuid int) (models.Teacher, error) {
 	return p.repositoryTeacher.Get(uuid)
 }

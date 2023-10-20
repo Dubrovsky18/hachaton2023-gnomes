@@ -9,14 +9,14 @@ type TeacherPostgres struct {
 	db *gorm.DB
 }
 
-func (p *TeacherPostgres) GetLogin(login string) (models.Student, error) {
-	//TODO implement me
-	panic("implement me")
+func (p *TeacherPostgres) GetLogin(login string) (models.Teacher, error) {
+	var teacher models.Teacher
+	result := p.db.Where("Email = ?", login).First(&teacher)
+	return teacher, result.Error
 }
 
 func (p *TeacherPostgres) Create(teacher models.Teacher) error {
-	//TODO implement me
-	panic("implement me")
+	return p.db.Create(teacher).Error
 }
 
 func (p *TeacherPostgres) Get(uuid int) (models.Teacher, error) {

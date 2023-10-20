@@ -15,14 +15,14 @@ type Student interface {
 type Teacher interface {
 	Create(teacher models.Teacher) error
 	Get(uuid int) (models.Teacher, error)
-	GetLogin(login string) (models.Student, error)
+	GetLogin(login string) (models.Teacher, error)
 	Update(teacher models.Teacher) error
 }
 
 type Admin interface {
 	Create(teacher models.Admin) error
 	Get(uuid int) (models.Admin, error)
-	GetLogin(login string) (models.Student, error)
+	GetLogin(login string) (models.Admin, error)
 	Update(teacher models.Admin) error
 }
 

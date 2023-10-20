@@ -16,7 +16,7 @@ func NewScheduleService(schedule repository.RepositorySchedule) *ScheduleService
 }
 
 func (p ScheduleService) Get() ([]models.Schedule, error) {
-	return p.repositorySchedule.Get(), nil
+	return p.repositorySchedule.Get()
 }
 
 func (p ScheduleService) Create(schedule []models.Schedule) error {
