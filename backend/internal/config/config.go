@@ -14,6 +14,8 @@ type Database struct {
 	User     string
 	Password string
 	Name     string
+	DBName   string
+	SSLMode  string
 }
 
 var config *Config
@@ -26,10 +28,11 @@ func GetConfig() *Config {
 	return &Config{
 		Database: Database{
 			Host:     envy.Get("POSTGRES_HOST", "localhost"),
-			Port:     envy.Get("POSTGRES_PORT", "5432"),
+			Port:     envy.Get("POSTGRES_PORT", "5431"),
 			User:     envy.Get("POSTGRES_USER", "postgres"),
 			Password: envy.Get("POSTGRES_PASSWORD", "postgres"),
-			Name:     envy.Get("POSTGRES_NAME", "postgres"),
+			DBName:   envy.Get("POSTGRES_NAME", "postgres"),
+			SSLMode:  envy.Get("SSLMode", "disable"),
 		},
 	}
 }
