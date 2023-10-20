@@ -21,7 +21,7 @@ type Teacher struct{
 	gorm.Model
 	User User `gorm:"embedded;"`
 	Hours int `gorm:"column:hours" json:"hours"`
-	WeekendsDay string `gorm:"column:weekends_day" json:"weekends_day"`
+	WeekendsDay int `gorm:"column:weekends_day" json:"weekends_day"`
 }
 
 type Admin struct{
@@ -47,26 +47,21 @@ type Subject struct{
 	gorm.Model
 	Discipline string `gorm:"column:discipline" json:"discipline"`
 	TeacherID Teacher `gorm:"foreignkey:teacher_id;association_foreignkey:id"`
-}
-
-type Lesson struct{
-	gorm.Model
-	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
-	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id"`
-	HoursSemestr int `gorm:"column:hours_semestr" json:"hours_semestr"`
+	LessonHours int	`gorm:"column:lesson_hours" json:"lesson_hours"`
 	Type string `gorm:"column:type" json:"type"`
 }
 
 type Audience struct{
 	gorm.Model
-	Status bool `gorm:"column:status" json:"status"`
-	Capacity int `gorm:"column:capacity" json:"capacity"`
+	Name string `gorm:"column:name" json:"name"`
+	Type string `gorm:"column:type" json:"type"`
 }
 
 type Schedule struct{
 	gorm.Model
-	LessonID Lesson `gorm:"foreignkey:lesson_id;association_foreignkey:id"`
+	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
 	AudienceID Audience `gorm:"foreignkey:audience_id;association_foreignkey:id"`
+	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id"`
 	Date time.Time `gorm:"column:date" json:"date"`
 	Time time.Time `gorm:"column:time" json:"time"`
 }
