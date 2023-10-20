@@ -8,5 +8,5 @@ import (
 // Container is a DI container for application
 type Container struct {
 	BuildInfo *build.Info
-	Template  services.TemplateService
+	Template  services.Service
 }

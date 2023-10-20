@@ -24,13 +24,13 @@ func InitializeApplication() (*Application, error) {
 	appConfig := initializers.InitializeAppConfig()
 	info := initializers.InitializeBuildInfo()
 
-	templateRepos := repository.NewTemplateRepository()
-
-	templateService := services.NewTemplateRepository(templateRepos)
+	reposPostgres := repository.NewPostgresDB()
+	templateRepos := repository.NewRepository(reposPostgres)
+	templateServices := services.NewService(templateRepos)
 
 	container := &dependencies.Container{
 		BuildInfo: info,
-		Template:  templateService,
+		Template:  *templateServices,
 	}
 
 	router := initializers.InitializeRouter(container)

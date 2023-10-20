@@ -1,32 +1,50 @@
 package repository
 
 import (
-	"fmt"
-	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/config"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/models"
-	"gorm.io/driver/postgres"
+	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/repository/postgresql"
 	"gorm.io/gorm"
 )
 
-type TemplateRepository interface {
+type RepositoryStudent interface {
+	Create(student models.Student) error
+	Get(uuid int) (models.Student, error)
+	GetLogin(login string) (models.Student, error)
+	Update(student models.Student) error
 }
 
-type TemplateRepositoryImpl struct {
-	db *gorm.DB
+type RepositoryTeacher interface {
+	Create(teacher models.Teacher) error
+	Get(uuid int) (models.Teacher, error)
+	GetLogin(login string) (models.Teacher, error)
+	Update(teacher models.Teacher) error
 }
 
-func NewTemplateRepository() TemplateRepository {
-	cfg := config.GetConfig()
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		cfg.Database.Host, cfg.Database.User, cfg.Database.Password, cfg.Database.Name, cfg.Database.Port)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
+type RepositoryAdmin interface {
+	Create(admin models.Admin) error
+	Get(uuid int) (models.Admin, error)
+	GetLogin(login string) (models.Admin, error)
+	Update(admin models.Admin) error
+}
+
+type RepositorySchedule interface {
+	Create(schedule []models.Schedule) error
+	Get() ([]models.Schedule, error)
+	Update(schedule []models.Schedule) error
+}
+
+type Repository struct {
+	RepositoryStudent
+	RepositoryTeacher
+	RepositoryAdmin
+	RepositorySchedule
+}
+
+func NewRepository(db *gorm.DB) *Repository {
+	return &Repository{
+		RepositoryStudent:  postgresql.NewStudentPostgres(db),
+		RepositoryTeacher:  postgresql.NewTeacherPostgres(db),
+		RepositoryAdmin:    postgresql.NewAdminPostgres(db),
+		RepositorySchedule: postgresql.NewSchedulePostgres(db),
 	}
-	pgSvc := &TemplateRepositoryImpl{db: db}
-	err = db.AutoMigrate(&models.Template{})
-	if err != nil {
-		panic(err)
-	}
-	return pgSvc
 }
