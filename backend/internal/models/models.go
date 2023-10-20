@@ -16,6 +16,10 @@ type User struct{
 	Password string `gorm:"column:password" json:"password"`
 }
 
+type Hidden struct{
+	User User `gorm:"embedded;"`
+}
+
 type Teacher struct{
 	gorm.Model
 	User User `gorm:"embedded;"`
