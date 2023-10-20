@@ -28,9 +28,9 @@ func NewPostgresRepository(cfg *config.Config) (*postgresRepository, error) {
 		&models.Teacher{},
 		&models.Group{},
 		&models.Subject{},
-		&models.Lesson{},
 		&models.Schedule{},
 	)
+	
 	if err != nil {
 		panic(err)
 	}
