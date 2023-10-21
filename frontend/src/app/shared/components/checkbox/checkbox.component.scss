@@ -1,0 +1,49 @@
+.checkbox {
+  display: inline-block;
+  position: relative;
+}
+
+.checkbox__state {
+  cursor: pointer;
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
+}
+
+.checkbox__title {
+  color: #000;
+  font-family: "DlgGeo";
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.28px;
+}
+
+.checkbox__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform: translateX(-100%);
+}
+
+.checkbox__control {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #909399;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #909399;
+}
+
+.checkbox__input:focus ~ .checkbox__state .checkbox__title {
+  text-decoration: underline;
+}
+
+.checkbox__input ~ .checkbox__state .checkbox__control svg {
+  display: none;
+}
+
+.checkbox__input:checked ~ .checkbox__state .checkbox__control svg {
+  display: block;
+}

@@ -1,0 +1,50 @@
+.select-role-page {
+  padding: 110px 410px;
+}
+
+.select-role-page__header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 43px;
+}
+
+.select-role-form {
+  padding: 50px 75px 137px;
+  border-radius: 27px;
+  background: #F5F9FF;
+}
+
+.select-role-form__title {
+  color: #2D2D2D;
+  font-family: "Noto Sans";
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -1.28px;
+  margin-bottom: 45px;
+  display: flex;
+  justify-content: center;
+}
+
+.select-role-form__buttons-inner {
+  display: flex;
+  flex-direction: column;
+  row-gap: 52px;
+}
+
+.select-role-form__button {
+  border-radius: 21px;
+  background: #3E7D84;
+  padding: 32px 100px;
+  color: #FFF;
+  font-family: "DlgGeo";
+  font-size: 48px;
+  letter-spacing: 1.2px;
+  border: none;
+  transition: all .3s;
+
+  &:hover {
+    background: #B5D9DD;
+    color: #3E7D84;
+  }
+}
