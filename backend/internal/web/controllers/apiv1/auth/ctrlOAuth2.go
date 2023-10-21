@@ -22,6 +22,8 @@ var GOOGLE_SCOPES = []string{
 }
 
 var conf = &oauth2.Config{
+	ClientID:     key,
+	ClientSecret: sec,
 	Endpoint: oauth2.Endpoint{
 		AuthURL:  GOOGLE_AUTH_URI,
 		TokenURL: GOOGLE_TOKEN_URI,
@@ -58,22 +60,18 @@ func (ctrl *Controller) handleOAuth2Callback(c *fiber.Ctx) error {
 	role, ok := ctrl.alreadyEmail(userInfo.Email)
 	if ok {
 		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
-		return nil
+		c.Redirect("/api/v1/oauth2/login/" + role)
 	} else {
-		if role == "student" {
+		HiddenUsers[userInfo.Email] = userInfo.Name
 
+		session := &fiber.Cookie{
+			Name:   userInfo.Name,
+			Value:  "hidden",
+			MaxAge: 24 * 60 * 60,
+			Path:   "/",
 		}
+		c.Cookie(session)
 	}
-
-	HiddenUsers[userInfo.Email] = userInfo.Name
-
-	session := &fiber.Cookie{
-		Name:   userInfo.Name,
-		Value:  "hidden",
-		MaxAge: 24 * 60 * 60,
-		Path:   "/",
-	}
-	c.Cookie(session)
 
 	err = json.NewDecoder(resp.Body).Decode(&userInfo)
 	if err != nil {

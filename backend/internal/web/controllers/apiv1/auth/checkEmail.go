@@ -15,17 +15,17 @@ func IsValidEmail(email string) bool {
 
 func (ctrl Controller) alreadyEmail(email string) (string, bool) {
 
-	_, err := ctrl.studentService.GetLogin(email)
+	_, err := ctrl.services.Student.GetLogin(email)
 	if err == nil {
 		return "student", true
 	}
 
-	_, err = ctrl.teacherService.GetLogin(email)
+	_, err = ctrl.services.Teacher.GetLogin(email)
 	if err == nil {
 		return "teacher", true
 	}
 
-	_, err = ctrl.adminService.GetLogin(email)
+	_, err = ctrl.services.Admin.GetLogin(email)
 	if err == nil {
 		return "admin", true
 	}

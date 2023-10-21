@@ -8,19 +8,17 @@ import (
 
 type Controller struct {
 	apiv1.BaseController
-	studentService *services.StudentService
-	teacherService *services.TeacherService
-	adminService   *services.AdminService
+	services *services.Service
 }
 
-func NewController(service *services.StudentService) *Controller {
+func NewController(service services.Service) *Controller {
 	return &Controller{
-		studentService: service,
+		services: &service,
 	}
 }
 
 // DefineRoutes defines the routes for the message API
-func (ctrl *Controller) DefineRoutes(r *fiber.App) {
+func (ctrl *Controller) DefineRoutes(r fiber.Router) {
 	apiVer := r.Group("/api/v1/")
 	auth := apiVer.Group("/auth")
 	oauth2 := apiVer.Group("/oauth2")
@@ -33,51 +31,49 @@ func (ctrl *Controller) DefineRoutes(r *fiber.App) {
 	{
 		oauth2.Post("/login/:role", ctrl.loginOAuth2)
 		oauth2.Get("/callback", ctrl.loginOAuth2)
-		oauth2.Get("/register", ctrl.register)
 
 	}
+	//
+	//{
+	//	student := apiVer.Group("/student")
+	//	{
+	//		student.Get("/profile")
+	//		student.Put("/profile")
+	//		student.Get("/schedule")
+	//	}
+	//
+	//	teacher := apiVer.Group("/teacher")
+	//	{
+	//		teacher.Get("/profile")
+	//		teacher.Put("/profile")
+	//		teacherSchedule := teacher.Group("/schedule")
+	//		{
+	//			// через JWT token определённое расписание
+	//			teacherSchedule.Get("/")
+	//			teacherSchedule.Post("/wishes")
+	//		}
+	//	}
 
-	identity := apiVer.Group("/in")
-
+	admin := apiVer.Group("/admin")
 	{
-		student := identity.Group("/student")
-		{
-			student.Get("/profile")
-			student.Put("/profile")
-			student.Get("/schedule")
-		}
+		admin.Get("/profiles", ctrl.GetProfiles)
+		admin.Post("/profiles", ctrl.ChangeUsers)
 
-		teacher := identity.Group("/teacher")
-		{
-			teacher.Get("/profile")
-			teacher.Put("/profile")
-			teacherSchedule := teacher.Group("/schedule")
-			{
-				// через JWT token определённое расписание
-				teacherSchedule.Get("/")
-				teacherSchedule.Post("/wishes")
-			}
-		}
+		//		adminSchedule := admin.Group("/schedule")
+		//		{
+		//			adminSchedule.Get("/")
+		//			adminSchedule.Post("/generate")
+		//			adminSchedule.Post("/change")
+		//			adminSchedule.Get("/wishes")
+		//		}
+		//
+		//		adminCreate := admin.Group("/create")
+		//		{
+		//			adminCreate.Post("/student")
+		//			adminCreate.Post("/teacher")
+		//		}
+		//	}
+		//}
 
-		admin := identity.Group("/admin")
-		{
-			admin.Get("/profiles", ctrl.GetProfiles)
-			admin.Post("/profiles", ctrl.ChangeUsers)
-
-			adminSchedule := admin.Group("/schedule")
-			{
-				adminSchedule.Get("/")
-				adminSchedule.Post("/generate")
-				adminSchedule.Post("/change")
-				adminSchedule.Get("/wishes")
-			}
-
-			adminCreate := admin.Group("/create")
-			{
-				adminCreate.Post("/student")
-				adminCreate.Post("/teacher")
-			}
-		}
 	}
-
 }

@@ -6,29 +6,29 @@ import (
 )
 
 type StudentPostgres struct {
-	db *gorm.DB
+	Db *gorm.DB
 }
 
 func (p *StudentPostgres) GetLogin(login string) (models.Student, error) {
 	var student models.Student
-	result := p.db.Where("Email = ?", login).First(&student)
+	result := p.Db.Where("Email = ?", login).First(&student)
 	return student, result.Error
 }
 
 func (p *StudentPostgres) Create(student models.Student) error {
-	return p.db.Create(student).Error
+	return p.Db.Create(student).Error
 }
 
 func (p *StudentPostgres) Get(uuid int) (models.Student, error) {
 	var student models.Student
-	result := p.db.Where("id = ?", uuid).First(&student)
+	result := p.Db.Where("id = ?", uuid).First(&student)
 	return student, result.Error
 }
 
 func (p *StudentPostgres) Update(student models.Student) error {
-	return p.db.Updates(student).Error
+	return p.Db.Updates(student).Error
 }
 
 func NewStudentPostgres(db *gorm.DB) *StudentPostgres {
-	return &StudentPostgres{db: db}
+	return &StudentPostgres{Db: db}
 }

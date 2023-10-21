@@ -60,7 +60,6 @@ type Audience struct {
 
 type Lesson struct {
 	gorm.Model
-
 	SubjectID   Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
 	GroupID     Group   `gorm:"foreignkey:group_id;association_foreignkey:id"`
 	LessonHours int     `gorm:"column:lesson_hours" json:"lesson_hours"`
@@ -69,7 +68,7 @@ type Lesson struct {
 type Schedule struct {
 	gorm.Model
 	LessonID   Lesson   `gorm:"foreignkey:lesson_id;association_foreignkey:id"`
-	AudienceID Audience `gorm:"foreignkey:audience_id;association_foreignkey:id"`
+	AudienceID Audience `gorm:"foreignkey:audience_id;association_foreignkey:id" json:"audience_id"`
 	Day        int      `gorm:"column:day" json:"day"`
 	Time       int      `gorm:"column:time" json:"time"`
 }

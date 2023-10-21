@@ -27,7 +27,7 @@ func (ctrl *Controller) ChangeUsers(c *fiber.Ctx) error {
 	}
 
 	if input.Role == "student" {
-		err := ctrl.studentService.Create(models.Student{
+		err := ctrl.services.Student.Create(models.Student{
 			User: input.User,
 		})
 		if err != nil {
@@ -35,7 +35,7 @@ func (ctrl *Controller) ChangeUsers(c *fiber.Ctx) error {
 			return err
 		}
 	} else if input.Role == "teacher" {
-		err := ctrl.teacherService.Create(models.Teacher{
+		err := ctrl.services.Teacher.Create(models.Teacher{
 			User: input.User,
 		})
 		if err != nil {
@@ -43,7 +43,7 @@ func (ctrl *Controller) ChangeUsers(c *fiber.Ctx) error {
 			return err
 		}
 	} else if input.Role == "admin" {
-		err := ctrl.adminService.Create(models.Admin{
+		err := ctrl.services.Admin.Create(models.Admin{
 			User: input.User,
 		})
 		if err != nil {

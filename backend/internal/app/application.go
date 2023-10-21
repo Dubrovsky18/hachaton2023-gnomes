@@ -6,6 +6,7 @@ import (
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/app/dependencies"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/app/initializers"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/repository"
+	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/repository/postgresql"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/services"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg/logger"
 
@@ -25,8 +26,11 @@ func InitializeApplication() (*Application, error) {
 	info := initializers.InitializeBuildInfo()
 
 	reposPostgres := repository.NewPostgresDB()
-	templateRepos := repository.NewRepository(reposPostgres)
-	templateServices := services.NewService(templateRepos)
+	st := postgresql.NewStudentPostgres(reposPostgres)
+	te := postgresql.NewTeacherPostgres(reposPostgres)
+	ad := postgresql.NewAdminPostgres(reposPostgres)
+	sc := postgresql.NewSchedulePostgres(reposPostgres)
+	templateServices := services.NewService(st, te, ad, sc)
 
 	container := &dependencies.Container{
 		BuildInfo: info,

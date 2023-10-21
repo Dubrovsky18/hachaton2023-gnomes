@@ -24,7 +24,7 @@ func InitializeRouter(container *dependencies.Container) *fiber.App {
 func buildControllers(container *dependencies.Container) []apiv1.Controller {
 	return []apiv1.Controller{
 		apiV1Status.NewController(container.BuildInfo),
-		apiV1Auth.NewController(&container.Template),
+		apiV1Auth.NewController(container.Template),
 		//apiv1Swagger.NewController(),
 
 	}

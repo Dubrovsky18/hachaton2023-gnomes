@@ -47,7 +47,7 @@ func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 			return err
 		}
-		student, err := ctrl.studentService.GetLogin(input.User.Email)
+		student, err := ctrl.services.Student.GetLogin(input.User.Email)
 		if (err != nil) || (student.User.Password != input.User.Password) {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 			return err
@@ -67,7 +67,7 @@ func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 			return nil
 		}
-		teacher, err := ctrl.teacherService.GetLogin(input.User.Email)
+		teacher, err := ctrl.services.Teacher.GetLogin(input.User.Email)
 		if (err != nil) || (teacher.User.Password != input.User.Password) {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 			return err

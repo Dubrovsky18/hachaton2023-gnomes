@@ -1,6 +1,6 @@
 module github.com/Dubrovsky18/hachaton2023-gnomes
 
-go 1.23
+go 1.19
 
 require (
 	github.com/gobuffalo/envy v1.10.2
