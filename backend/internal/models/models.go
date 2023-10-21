@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
@@ -18,7 +16,7 @@ type User struct {
 
 type Hidden struct {
 	User User   `gorm:"embedded;"`
-	Role string `gorm:"embedded"`
+	Role string `gorm:"embedded;"`
 }
 
 type Teacher struct {
@@ -49,10 +47,9 @@ type Student struct {
 
 type Subject struct {
 	gorm.Model
-	Discipline  string  `gorm:"column:discipline" json:"discipline"`
-	TeacherID   Teacher `gorm:"foreignkey:teacher_id;association_foreignkey:id"`
-	LessonHours int     `gorm:"column:lesson_hours" json:"lesson_hours"`
-	Type        string  `gorm:"column:type" json:"type"`
+	Discipline string  `gorm:"column:discipline" json:"discipline"`
+	TeacherID  Teacher `gorm:"foreignkey:teacher_id;association_foreignkey:id"`
+	Type       string  `gorm:"column:type" json:"type"`
 }
 
 type Audience struct {
@@ -61,11 +58,18 @@ type Audience struct {
 	Type string `gorm:"column:type" json:"type"`
 }
 
+type Lesson struct {
+	gorm.Model
+
+	SubjectID   Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
+	GroupID     Group   `gorm:"foreignkey:group_id;association_foreignkey:id"`
+	LessonHours int     `gorm:"column:lesson_hours" json:"lesson_hours"`
+}
+
 type Schedule struct {
 	gorm.Model
-	SubjectID  Subject   `gorm:"foreignkey:subject_id;association_foreignkey:id"`
-	AudienceID Audience  `gorm:"foreignkey:audience_id;association_foreignkey:id"`
-	GroupID    Group     `gorm:"foreignkey:group_id;association_foreignkey:id"`
-	Date       time.Time `gorm:"column:date" json:"date"`
-	Time       time.Time `gorm:"column:time" json:"time"`
+	LessonID   Lesson   `gorm:"foreignkey:lesson_id;association_foreignkey:id"`
+	AudienceID Audience `gorm:"foreignkey:audience_id;association_foreignkey:id"`
+	Day        int      `gorm:"column:day" json:"day"`
+	Time       int      `gorm:"column:time" json:"time"`
 }
