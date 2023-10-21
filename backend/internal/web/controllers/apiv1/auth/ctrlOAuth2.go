@@ -1,82 +1,74 @@
 package auth
 
 import (
-	"encoding/json"
-	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
+	"github.com/markbates/goth"
+	"github.com/markbates/goth/gothic"
+	"github.com/markbates/goth/providers/google"
 	"golang.org/x/oauth2"
 	"net/http"
 )
 
 const (
-	key                  = "1028434575027-br2d20a7qbuli837iumif8skmp385dqb.apps.googleusercontent.com"
-	sec                  = "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"
-	GOOGLE_AUTH_URI      = "https://accounts.google.com/o/oauth2/auth"
-	GOOGLE_TOKEN_URI     = "https://accounts.google.com/o/oauth2/token"
-	GOOGLE_USER_INFO_URI = "https://www.googleapis.com/oauth2/v1/userinfo"
+	clientID     = "1028434575027-br2d20a7qbuli837iumif8skmp385dqb.apps.googleusercontent.com"
+	clientSecret = "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"
+	redirectURL  = "https://www.figma.com/proto/lj8n9p0lfJvJkOS1TrXYQa/Untitled?page-id=0%3A1&type=design&node-id=1-1770&viewport=329%2C168%2C0.14&t=X79cT6CK1AOZuvMq-1&scaling=scale-down&starting-point-node-id=1%3A1770&mode=design"
 )
 
-var GOOGLE_SCOPES = []string{
-	"https://www.googleapis.com/auth/userinfo.email",
-	"https://www.googleapis.com/auth/userinfo.profile",
+var (
+	oauthConfig = &oauth2.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		RedirectURL:  redirectURL,
+		Scopes: []string{
+			"https://www.googleapis.com/auth/userinfo.email",
+			"https://www.googleapis.com/auth/userinfo.profile",
+		},
+		Endpoint: google.Endpoint,
+	}
+)
+
+func (ctrl *Controller) loginOAuth2(c *gin.Context) {
+	key := clientSecret  // Replace with your SESSION_SECRET or similar
+	maxAge := 86400 * 30 // 30 days
+	isProd := false
+
+	store := sessions.NewCookieStore([]byte(key))
+	store.MaxAge(maxAge)
+	store.Options.Path = "/"
+	store.Options.HttpOnly = true // HttpOnly should always be enabled
+	store.Options.Secure = isProd
+
+	gothic.Store = store
+
+	goth.UseProviders(
+		google.New(clientID, clientSecret, redirectURL, "email", "profile"),
+	)
+
+	authURL := oauthConfig.AuthCodeURL("state", oauth2.AccessTypeOffline)
+	c.Redirect(http.StatusFound, authURL)
 }
-
-var conf = &oauth2.Config{
-	ClientID:     key,
-	ClientSecret: sec,
-	Endpoint: oauth2.Endpoint{
-		AuthURL:  GOOGLE_AUTH_URI,
-		TokenURL: GOOGLE_TOKEN_URI,
-	},
-}
-
-func (ctrl *Controller) loginOAuth2(c *fiber.Ctx) error {
-
-	authURL := conf.AuthCodeURL("state", oauth2.AccessTypeOffline)
-	return c.Redirect(authURL)
-}
-
-func (ctrl *Controller) handleOAuth2Callback(c *fiber.Ctx) error {
+func (ctrl *Controller) handleOAuth2Callback(c *gin.Context) {
 	code := c.Query("code")
 
-	token, err := conf.Exchange(c.Context(), code)
+	token, err := oauthConfig.Exchange(c.Request.Context(), code)
 	if err != nil {
-		return err
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 
-	client := conf.Client(c.Context(), token)
+	client := oauthConfig.Client(c.Request.Context(), token)
 
 	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")
 	if err != nil {
-		return err
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 	defer resp.Body.Close()
 
-	var userInfo struct {
-		Email string `json:"email"`
-		Name  string `json:"name"`
-	}
+	// Используйте полученный токен для получения информации о пользователе
+	// ...
 
-	role, ok := ctrl.alreadyEmail(userInfo.Email)
-	if ok {
-		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
-		c.Redirect("/api/v1/oauth2/login/" + role)
-	} else {
-		HiddenUsers[userInfo.Email] = userInfo.Name
-
-		session := &fiber.Cookie{
-			Name:   userInfo.Name,
-			Value:  "hidden",
-			MaxAge: 24 * 60 * 60,
-			Path:   "/",
-		}
-		c.Cookie(session)
-	}
-
-	err = json.NewDecoder(resp.Body).Decode(&userInfo)
-	if err != nil {
-		return err
-	}
-
-	return c.SendString("Successfully authenticated")
+	c.String(http.StatusOK, "Successfully authenticated")
 }

@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/services"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 )
 
 type Controller struct {
@@ -11,28 +11,33 @@ type Controller struct {
 	services *services.Service
 }
 
-func NewController(service services.Service) *Controller {
+func NewController(service *services.Service) *Controller {
 	return &Controller{
-		services: &service,
+		services: service,
 	}
+
+}
+
+type responseWriter struct {
+	gin.ResponseWriter
+	statusCode int
+	length     int
 }
 
 // DefineRoutes defines the routes for the message API
-func (ctrl *Controller) DefineRoutes(r fiber.Router) {
-	apiVer := r.Group("/api/v1/")
-	auth := apiVer.Group("/auth")
+func (ctrl *Controller) DefineRoutes(r gin.IRouter) {
+	apiVer := r.Group("/api/v1")
 	oauth2 := apiVer.Group("/oauth2")
 
-	{
-		auth.Post("/login/:role", ctrl.loginAuth)
-		auth.Post("/register", ctrl.register)
-	}
+	r.Use(func(c *gin.Context) {
+		c.Writer = &responseWriter{c.Writer, c.Writer.Status(), 0}
+		c.Next()
+	})
 
-	{
-		oauth2.Post("/login/:role", ctrl.loginOAuth2)
-		oauth2.Get("/callback", ctrl.loginOAuth2)
+	oauth2.GET("/login", ctrl.loginOAuth2)
+	oauth2.GET("/callback", ctrl.handleOAuth2Callback)
+	//apiVer.GET("/auth/google/callback")
 
-	}
 	//
 	//{
 	//	student := apiVer.Group("/student")
@@ -54,26 +59,25 @@ func (ctrl *Controller) DefineRoutes(r fiber.Router) {
 	//		}
 	//	}
 
-	admin := apiVer.Group("/admin")
-	{
-		admin.Get("/profiles", ctrl.GetProfiles)
-		admin.Post("/profiles", ctrl.ChangeUsers)
+	//admin := apiVer.Group("/admin")
+	//{
+	//	admin.GET("/profiles", ctrl.GetProfiles)
+	//	admin.POST("/profiles", ctrl.ChangeUsers)
 
-		//		adminSchedule := admin.Group("/schedule")
-		//		{
-		//			adminSchedule.Get("/")
-		//			adminSchedule.Post("/generate")
-		//			adminSchedule.Post("/change")
-		//			adminSchedule.Get("/wishes")
-		//		}
-		//
-		//		adminCreate := admin.Group("/create")
-		//		{
-		//			adminCreate.Post("/student")
-		//			adminCreate.Post("/teacher")
-		//		}
-		//	}
-		//}
+	//		adminSchedule := admin.Group("/schedule")
+	//		{
+	//			adminSchedule.Get("/")
+	//			adminSchedule.Post("/generate")
+	//			adminSchedule.Post("/change")
+	//			adminSchedule.Get("/wishes")
+	//		}
+	//
+	//		adminCreate := admin.Group("/create")
+	//		{
+	//			adminCreate.Post("/student")
+	//			adminCreate.Post("/teacher")
+	//		}
+	//	}
+	//}
 
-	}
 }

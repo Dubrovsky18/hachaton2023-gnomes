@@ -28,7 +28,7 @@ func GetConfig() *Config {
 	return &Config{
 		Database: Database{
 			Host:     envy.Get("POSTGRES_HOST", "localhost"),
-			Port:     envy.Get("POSTGRES_PORT", "5431"),
+			Port:     envy.Get("POSTGRES_PORT", "5432"),
 			User:     envy.Get("POSTGRES_USER", "postgres"),
 			Password: envy.Get("POSTGRES_PASSWORD", "postgres"),
 			DBName:   envy.Get("POSTGRES_NAME", "postgres"),

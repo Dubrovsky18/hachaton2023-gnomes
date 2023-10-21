@@ -4,12 +4,8 @@ import (
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/app/build"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/render"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"net/http"
-)
-
-var (
-	_ apiv1.Controller = (*Controller)(nil)
 )
 
 // Controller is a controller implementation for status checks
@@ -33,15 +29,15 @@ func NewController(bi *build.Info) *Controller {
 // @Produce json
 // @Success 200 {object} ResponseDoc
 // @Router /api/v1/status [get]
-func (ctrl *Controller) GetStatus(ctx *fiber.Ctx) error {
+func (ctrl *Controller) GetStatus(ctx *gin.Context) {
 	render.JSONAPIPayload(ctx, http.StatusOK, &Response{
 		Status: http.StatusText(http.StatusOK),
 		Build:  ctrl.buildInfo,
 	})
-	return nil
+	return
 }
 
 // DefineRoutes adds controller routes to the router
-func (ctrl *Controller) DefineRoutes(r fiber.Router) {
-	r.Get("/api/v1/status", ctrl.GetStatus)
+func (ctrl *Controller) DefineRoutes(r gin.IRouter) {
+	r.GET("/api/v1/status", ctrl.GetStatus)
 }

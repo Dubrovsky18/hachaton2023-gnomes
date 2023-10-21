@@ -5,12 +5,13 @@ import (
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1"
 	apiV1Auth "github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1/auth"
 	apiV1Status "github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/controllers/apiv1/status"
-	"github.com/gofiber/fiber/v2"
+	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/web/router"
+	"github.com/gin-gonic/gin"
 )
 
 // InitializeRouter initializes new gin router
-func InitializeRouter(container *dependencies.Container) *fiber.App {
-	r := fiber.New()
+func InitializeRouter(container *dependencies.Container) *gin.Engine {
+	r := router.NewRouter()
 
 	ctrls := buildControllers(container)
 
@@ -24,7 +25,7 @@ func InitializeRouter(container *dependencies.Container) *fiber.App {
 func buildControllers(container *dependencies.Container) []apiv1.Controller {
 	return []apiv1.Controller{
 		apiV1Status.NewController(container.BuildInfo),
-		apiV1Auth.NewController(container.Template),
+		apiV1Auth.NewController(&container.Template),
 		//apiv1Swagger.NewController(),
 
 	}

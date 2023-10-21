@@ -3,7 +3,7 @@ package auth
 import (
 	"errors"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
 )
@@ -13,8 +13,8 @@ const (
 	userCtx             = "userUUID"
 )
 
-func getUserHeaderToken(c *fiber.Ctx) (string, error) {
-	header := c.GetRespHeader(authorizationHeader)
+func getUserHeaderToken(c *gin.Context) (string, error) {
+	header := c.GetHeader(authorizationHeader)
 	if header == "" {
 		return "", errors.New("empty auth header")
 	}
@@ -32,12 +32,18 @@ func getUserHeaderToken(c *fiber.Ctx) (string, error) {
 
 }
 
-func getUserUUID(c *fiber.Ctx) (int, error) {
-	uuid, ok := c.Locals(userCtx).(int)
+func getUserUUID(c *gin.Context) (int, error) {
+	uuid, ok := c.Get(userCtx)
 	if !ok {
 		pkg.NewErrorResponse(c, http.StatusInternalServerError, "user is not found")
 		return 0, errors.New("user id not found")
 	}
 
-	return uuid, nil
+	userUUID, ok := uuid.(int)
+	if !ok {
+		pkg.NewErrorResponse(c, http.StatusInternalServerError, "user id is of invalid type")
+		return 0, errors.New("user id not found")
+	}
+
+	return userUUID, nil
 }

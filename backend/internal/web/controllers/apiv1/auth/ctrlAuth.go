@@ -1,86 +1,81 @@
 package auth
 
 import (
+	"net/http"
+
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/models"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg"
-	"github.com/gofiber/fiber/v2"
-	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
 var HiddenUsers map[string]string
 
-func (ctrl *Controller) register(c *fiber.Ctx) error {
-
+func (ctrl *Controller) register(c *gin.Context) {
 	var hidden models.Hidden
 
-	if err := c.BodyParser(&hidden); err != nil {
+	if err := c.ShouldBindJSON(&hidden); err != nil {
 		pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-		return err
+		return
 	}
 
 	_, ok := ctrl.alreadyEmail(hidden.User.Email)
 	if ok {
 		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
-		return nil
+		return
 	} else {
 		HiddenUsers = map[string]string{
 			hidden.User.Email: hidden.User.Name,
 		}
 
-		session := &fiber.Cookie{
+		session := &http.Cookie{
 			Name:   hidden.User.Name,
 			Value:  "hidden",
 			MaxAge: 24 * 60 * 60,
 			Path:   "/",
 		}
-		c.Cookie(session)
-		return nil
+		http.SetCookie(c.Writer, session)
 	}
 }
-
-func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
-
-	role := c.Params("role")
+func (ctrl *Controller) loginAuth(c *gin.Context) {
+	role := c.Param("role")
 	if role == "student" {
 		var input models.Student
-		if err := c.BodyParser(&input); err != nil {
+		if err := c.ShouldBindJSON(&input); err != nil {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-			return err
+			return
 		}
 		student, err := ctrl.services.Student.GetLogin(input.User.Email)
-		if (err != nil) || (student.User.Password != input.User.Password) {
+		if err != nil || student.User.Password != input.User.Password {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-			return err
+			return
 		}
 
-		session := &fiber.Cookie{
+		session := &http.Cookie{
 			Name:   input.User.Name,
 			Value:  "student",
 			MaxAge: 24 * 60 * 60,
 			Path:   "/",
 		}
-		c.Cookie(session)
+		http.SetCookie(c.Writer, session)
 
 	} else if role == "teacher" {
 		var input models.Teacher
-		if err := c.BodyParser(&input); err != nil {
+		if err := c.ShouldBindJSON(&input); err != nil {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-			return nil
+			return
 		}
 		teacher, err := ctrl.services.Teacher.GetLogin(input.User.Email)
-		if (err != nil) || (teacher.User.Password != input.User.Password) {
+		if err != nil || teacher.User.Password != input.User.Password {
 			pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
-			return err
+			return
 		}
 
-		session := &fiber.Cookie{
+		session := &http.Cookie{
 			Name:   input.User.Name,
 			Value:  "teacher",
 			MaxAge: 24 * 60 * 60,
 			Path:   "/",
 		}
-		c.Cookie(session)
+		http.SetCookie(c.Writer, session)
 	}
-
-	return nil
 }

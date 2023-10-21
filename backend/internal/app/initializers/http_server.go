@@ -3,7 +3,7 @@ package initializers
 import (
 	"fmt"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/app/config"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 )
@@ -19,7 +19,7 @@ func logMiddleware(next http.Handler) http.Handler {
 }
 
 // InitializeHTTPServer create new http.Server instance
-func InitializeHTTPServer(app *fiber.App, cfg *config.HTTPConfig) *http.Server {
+func InitializeHTTPServer(app *gin.Engine, cfg *config.HTTPConfig) *http.Server {
 	// Создаем экземпляр Fiber-совместимого обработчика
 
 	return &http.Server{

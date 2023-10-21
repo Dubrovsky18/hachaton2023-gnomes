@@ -3,7 +3,6 @@ package services
 import (
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/models"
 	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/repository"
-	"github.com/Dubrovsky18/hachaton2023-gnomes/internal/repository/postgresql"
 )
 
 type Student interface {
@@ -40,11 +39,11 @@ type Service struct {
 	Schedule
 }
 
-func NewService(reposStudent *postgresql.StudentPostgres, reposTeacher *postgresql.TeacherPostgres, reposAdmin repository.RepositoryAdmin, reposSchedule repository.RepositorySchedule) *Service {
+func NewService(repo repository.Repository) *Service {
 	return &Service{
-		Student:  NewStudentService(reposStudent),
-		Teacher:  NewTeacherService(reposTeacher),
-		Admin:    NewAdminService(reposAdmin),
-		Schedule: NewScheduleService(reposSchedule),
+		Student:  NewStudentService(repo.RepositoryStudent),
+		Teacher:  NewTeacherService(repo.RepositoryTeacher),
+		Admin:    NewAdminService(repo.RepositoryAdmin),
+		Schedule: NewScheduleService(repo.RepositorySchedule),
 	}
 }
