@@ -36,7 +36,6 @@ INSERT INTO subject VALUES (discipline, teacher_id, type)
     ("Физика", 3, "лекция");
     ("Физика", 3, "семинар");
     ("Английский", 4, "семинар");
-    ("Английский", 5, "семинар");
     ("Python", 6, "семинар");
     ("Алгоритмы", 6, "семинар");
 
@@ -50,8 +49,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 1, 8);
     (8, 1, 8);
     (9, 1, 24);
-    (11, 1, 18);
-    (12, 1, 16);
+    (10, 1, 18);
+    (11, 1, 16);
 
     (1, 2, 10);
     (2, 2, 16);
@@ -62,8 +61,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 2, 8);
     (8, 2, 8);
     (9, 2, 24);
-    (11, 2, 18);
-    (12, 2, 16);
+    (10, 2, 18);
+    (11, 2, 16);
 
     (1, 3, 10);
     (2, 3, 16);
@@ -74,8 +73,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 3, 8);
     (8, 3, 8);
     (9, 3, 24);
-    (11, 3, 18);
-    (12, 3, 16);
+    (10, 3, 18);
+    (11, 3, 16);
 
     (1, 4, 10);
     (2, 4, 16);
@@ -86,8 +85,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 4, 8);
     (8, 4, 8);
     (9, 4, 24);
-    (11, 4, 18);
-    (12, 4, 16);
+    (10, 4, 18);
+    (11, 4, 16);
 
     (1, 5, 10);
     (2, 5, 16);
@@ -98,8 +97,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 5, 8);
     (8, 5, 8);
     (9, 5, 24);
-    (11, 5, 18);
-    (12, 5, 16);
+    (10, 5, 18);
+    (11, 5, 16);
 
     (1, 6, 10);
     (2, 6, 16);
@@ -110,8 +109,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 6, 8);
     (8, 6, 8);
     (9, 6, 24);
-    (11, 6, 18);
-    (12, 6, 16);
+    (10, 6, 18);
+    (11, 6, 16);
 
     (1, 7, 10);
     (2, 7, 16);
@@ -122,8 +121,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 7, 8);
     (8, 7, 8);
     (9, 7, 24);
-    (11, 7, 18);
-    (12, 7, 16);
+    (10, 7, 18);
+    (11, 7, 16);
 
     (1, 8, 10);
     (2, 8, 16);
@@ -134,8 +133,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 8, 8);
     (8, 8, 8);
     (9, 8, 24);
-    (11, 8, 18);
-    (12, 8, 16);
+    (10, 8, 18);
+    (11, 8, 16);
 
     (1, 9, 10);
     (2, 9, 16);
@@ -146,8 +145,8 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 9, 8);
     (8, 9, 8);
     (9, 9, 24);
-    (11, 9, 18);
-    (12, 9, 16);
+    (10, 9, 18);
+    (11, 9, 16);
 
     (1, 10, 10);
     (2, 10, 16);
@@ -158,5 +157,5 @@ INSERT INTO lesson VALUES (subject_id, group_id, lesson_hours)
     (7, 10, 8);
     (8, 10, 8);
     (9, 10, 24);
-    (11, 10, 18);
-    (12, 10, 16);
+    (10, 10, 18);
+    (11, 10, 16);
