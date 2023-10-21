@@ -18,12 +18,14 @@ type User struct {
 
 type Hidden struct{
 	User User `gorm:"embedded;"`
+	Role string `gorm:"embedded;"`
 }
 
 type Teacher struct{
 	gorm.Model
 	User User `gorm:"embedded;"`
-	Hours int `gorm:"column:hours" json:"hours"`
+	Pref_auds `gorm:"column:pref_auds" json:"pref_auds"`
+	Pref_slots `gorm:"column:pref_slots" json:"pref_slots"`
 	WeekendsDay int `gorm:"column:weekends_day" json:"weekends_day"`
 
 }
