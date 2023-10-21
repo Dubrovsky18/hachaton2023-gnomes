@@ -5,6 +5,7 @@ import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SelectRolePageComponent } from './pages/select-role-page/select-role-page.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { AuthLoginFormComponent } from './components/auth-login-form/auth-login-form.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 
@@ -17,7 +18,8 @@ import { AuthLoginFormComponent } from './components/auth-login-form/auth-login-
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    SharedModule,
   ]
 })
 export class AuthModule { }

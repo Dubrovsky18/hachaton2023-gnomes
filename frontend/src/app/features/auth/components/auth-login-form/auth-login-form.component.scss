@@ -1,0 +1,92 @@
+.auth-login-form {
+  border-radius: 27px;
+  background: #F5F9FF;
+  padding: 35px 65px 30px;
+}
+
+.auth-login-form__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-login-form__title {
+  display: flex;
+  justify-content: center;
+  color: #2D2D2D;
+  font-size: 80px;
+  font-weight: 700;
+  letter-spacing: -1.6px;
+  font-family: "Noto Sans";
+  margin-bottom: 35px;
+  width: 100%;
+}
+
+.auth-login-form__inputs-inner {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  margin-bottom: 25px;
+}
+
+.auth-login-form__input {
+  border-radius: 21px;
+  background: #C0C4CC;
+  padding: 24px 440px 24px 30px;
+  border: none;
+  font-size: 40px;
+  font-family: "Noto Sans";
+
+  &::placeholder {
+    font-family: "Noto Sans";
+    color: #6C6E73;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+}
+
+.auth-login-form__submit {
+  font-family: "Noto Sans";
+  border-radius: 20px;
+  background: #3E7D84;
+  color: #FFF;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  padding: 12px 106px;
+  margin-top: 50px;
+  border: none;
+  transition: all .3s;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #B5D9DD;
+    color: #3E7D84;
+  }
+}
+
+.auth-login-form__checkbox {
+  position: relative;
+  right: 350px;
+}
+
+.auth-login-form__google-button {
+  font-family: "Noto Sans";
+  border-radius: 21px;
+  background: #DCE0E5;
+  padding: 25px 110px;
+  display: flex;
+  align-items: center;
+  color: #2D2D2D;
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  border: none;
+
+  img {
+    margin-right: 20px;
+  }
+}
+

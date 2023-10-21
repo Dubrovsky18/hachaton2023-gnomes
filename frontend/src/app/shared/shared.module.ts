@@ -10,6 +10,9 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    CheckboxComponent
   ]
 })
 export class SharedModule { }
