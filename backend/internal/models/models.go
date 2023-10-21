@@ -64,8 +64,8 @@ type Audience struct {
 
 type Lesson struct{
 	gorm.Model
-	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
-	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id"`
+	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id" json:"subject_id"`
+	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id" json:"group_id"`
 	LessonHours int     `gorm:"column:lesson_hours" json:"lesson_hours"`
 }
 
