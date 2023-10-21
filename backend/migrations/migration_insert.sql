@@ -10,14 +10,14 @@ INSERT INTO groups VALUES (faculty_code, school_classes, year_coming, subgroup)
     ("09.02.07", 9, 2022, 1);
     ("09.02.07", 9, 2022, 2);
 
-INSERT INTO teacher VALUES (name, second_name, phone, email, password, )
-    ("Вячеслав", "Головин", "77777777777", "golovin@mail.ru", "hard!password?", 20, 1);
-    ("Иван", "Иванов", "88888888888", "ivanov@mail.ru", "new-hard_password", 20, 2);
-    ("Кирилл", "Сидоров", "99999999999", "sidorov@ya.ru", "one_more-pass", 20, 3);
-    ("Мария", "Петрова", "79181231122", "petrova@mail.ru", "p1asssword!", 20, 4);
-    ("Анна", "Каренина", "79891351155", "cooolemail@yandex.ru", "karenina1!", 20, 5);
-    ("Виктор", "Баринов", "79111321157", "barinov@yandex.ru", "bar_i_cool!", 20, 6);
-    ("Андрей", "Моряков", "79181231121", "petrova@mail.ru", "p1asssword!", 20, 1);
+INSERT INTO teacher VALUES (name, second_name, phone, email, password, pref_auds, pref_slots, weekends_day)
+    ("Вячеслав", "Головин", "77777777777", "golovin@mail.ru", "hard!password?", "Компьютерный",  "(1, 1), (6, 5)",1);
+    ("Иван", "Иванов", "88888888888", "ivanov@mail.ru", "new-hard_password", "", "(1, 1), (6, 5)", 2);
+    ("Кирилл", "Сидоров", "99999999999", "sidorov@ya.ru", "one_more-pass", "Физика", "", 3);
+    ("Мария", "Петрова", "79181231122", "petrova@mail.ru", "p1asssword!", "", "(1, 1), (6, 5)", 4);
+    ("Анна", "Каренина", "79891351155", "cooolemail@yandex.ru", "karenina1!", "", "(1, 1), (6, 5)", 5);
+    ("Виктор", "Баринов", "79111321157", "barinov@yandex.ru", "bar_i_cool!", "", 6);
+    ("Андрей", "Моряков", "79181231121", "petrova@mail.ru", "p1asssword!", "Компьютерный", "(1, 1), (6, 5)", 1);
 
 INSERT INTO audience VALUES (name, type)
     ("Физика", "семинар");
