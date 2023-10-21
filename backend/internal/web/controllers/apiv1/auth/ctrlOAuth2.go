@@ -2,8 +2,10 @@ package auth
 
 import (
 	"encoding/json"
+	"github.com/Dubrovsky18/hachaton2023-gnomes/pkg"
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/oauth2"
+	"net/http"
 )
 
 const (
@@ -50,15 +52,33 @@ func (ctrl *Controller) handleOAuth2Callback(c *fiber.Ctx) error {
 
 	var userInfo struct {
 		Email string `json:"email"`
-		// Другие поля, которые вам интересны
+		Name  string `json:"name"`
 	}
+
+	role, ok := ctrl.alreadyEmail(userInfo.Email)
+	if ok {
+		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
+		return nil
+	} else {
+		if role == "student" {
+
+		}
+	}
+
+	HiddenUsers[userInfo.Email] = userInfo.Name
+
+	session := &fiber.Cookie{
+		Name:   userInfo.Name,
+		Value:  "hidden",
+		MaxAge: 24 * 60 * 60,
+		Path:   "/",
+	}
+	c.Cookie(session)
+
 	err = json.NewDecoder(resp.Body).Decode(&userInfo)
 	if err != nil {
 		return err
 	}
-
-	// Используйте информацию о пользователе по своему усмотрению
-	// Например, сохраните email в сессии или базе данных
 
 	return c.SendString("Successfully authenticated")
 }

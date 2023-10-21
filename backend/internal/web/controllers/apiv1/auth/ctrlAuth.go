@@ -7,6 +7,37 @@ import (
 	"net/http"
 )
 
+var HiddenUsers map[string]string
+
+func (ctrl *Controller) register(c *fiber.Ctx) error {
+
+	var hidden models.Hidden
+
+	if err := c.BodyParser(&hidden); err != nil {
+		pkg.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return err
+	}
+
+	_, ok := ctrl.alreadyEmail(hidden.User.Email)
+	if ok {
+		pkg.NewErrorResponse(c, http.StatusBadRequest, "user id already in system")
+		return nil
+	} else {
+		HiddenUsers = map[string]string{
+			hidden.User.Email: hidden.User.Name,
+		}
+
+		session := &fiber.Cookie{
+			Name:   hidden.User.Name,
+			Value:  "hidden",
+			MaxAge: 24 * 60 * 60,
+			Path:   "/",
+		}
+		c.Cookie(session)
+		return nil
+	}
+}
+
 func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
 
 	role := c.Params("role")
@@ -49,12 +80,7 @@ func (ctrl *Controller) loginAuth(c *fiber.Ctx) error {
 			Path:   "/",
 		}
 		c.Cookie(session)
-
 	}
-
-	pkg.NewJsonInterfaceResponse(c, http.StatusOK, "", "Auth-srv", map[string]interface{}{
-		"id": uuid,
-	})
 
 	return nil
 }

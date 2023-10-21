@@ -27,11 +27,14 @@ func (ctrl *Controller) DefineRoutes(r *fiber.App) {
 
 	{
 		auth.Post("/login/:role", ctrl.loginAuth)
+		auth.Post("/register", ctrl.register)
 	}
 
 	{
 		oauth2.Post("/login/:role", ctrl.loginOAuth2)
 		oauth2.Get("/callback", ctrl.loginOAuth2)
+		oauth2.Get("/register", ctrl.register)
+
 	}
 
 	identity := apiVer.Group("/in")
@@ -58,8 +61,8 @@ func (ctrl *Controller) DefineRoutes(r *fiber.App) {
 
 		admin := identity.Group("/admin")
 		{
-			admin.Get("/profile")
-			admin.Put("/profile")
+			admin.Get("/profiles", ctrl.GetProfiles)
+			admin.Post("/profiles", ctrl.ChangeUsers)
 
 			adminSchedule := admin.Group("/schedule")
 			{
