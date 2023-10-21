@@ -28,13 +28,6 @@ type Teacher struct{
 
 }
 
-type Teacher struct {
-	gorm.Model
-	User        User `gorm:"embedded;"`
-	Hours       int  `gorm:"column:hours" json:"hours"`
-	WeekendsDay int  `gorm:"column:weekends_day" json:"weekends_day"`
-}
-
 type Admin struct {
 	gorm.Model
 	User User `gorm:"embedded;"`
@@ -67,7 +60,7 @@ type Audience struct {
 	Type string `gorm:"column:type" json:"type"`
 }
 
-type Lessons struct{
+type Lesson struct{
 	gorm.Model
 	SubjectID Subject `gorm:"foreignkey:subject_id;association_foreignkey:id"`
 	GroupID Group `gorm:"foreignkey:group_id;association_foreignkey:id"`
