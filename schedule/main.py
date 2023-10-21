@@ -1,4 +1,4 @@
-import faker
+# import faker
 
 class Teacher:
     def __init__(self, id, name, weekend_day, pref_slots: [(int, int)], pref_aud: [str]):
@@ -206,49 +206,49 @@ class Schedule:
         return check
 
 
-# Создаем Faker-объект
-faker = faker.Faker()
-# Создаем новые комнаты
-rooms = {}
-for i in range(30):
-    room = Room(i, faker.random_element(["Для лекций", "Для практики"]))
-    rooms[i] = room
-# Создаем новые группы
-groups = {}
-for i in range(20):
-    group = Group(id=i, admission=faker.random_element([9, 11]), year=faker.random_int(2021, 2024),
-                  direction=faker.random_element(["Сисы", "Инфобез", "Прогеры"]), subjects={})
-    groups[i] = group
-# Создаем новых учителей
-teachers = {}
-for i in range(10):
-    teacher = Teacher(id=i, name=faker.name(), weekend_day=faker.random_int(1, 6),
-                      pref_slots=[(faker.random_int(1, 6), faker.random_int(1, 6)) for _ in
-                                  range(faker.random_int(0, 3))],
-                      pref_aud=list(set([faker.random_int(0,len(rooms)-1) for _ in range(0,6)])))
+# # Создаем Faker-объект
+# faker = faker.Faker()
+# # Создаем новые комнаты
+# rooms = {}
+# for i in range(30):
+#     room = Room(i, faker.random_element(["Для лекций", "Для практики"]))
+#     rooms[i] = room
+# # Создаем новые группы
+# groups = {}
+# for i in range(20):
+#     group = Group(id=i, admission=faker.random_element([9, 11]), year=faker.random_int(2021, 2024),
+#                   direction=faker.random_element(["Сисы", "Инфобез", "Прогеры"]), subjects={})
+#     groups[i] = group
+# # Создаем новых учителей
+# teachers = {}
+# for i in range(10):
+#     teacher = Teacher(id=i, name=faker.name(), weekend_day=faker.random_int(1, 6),
+#                       pref_slots=[(faker.random_int(1, 6), faker.random_int(1, 6)) for _ in
+#                                   range(faker.random_int(0, 3))],
+#                       pref_aud=list(set([faker.random_int(0,len(rooms)-1) for _ in range(0,6)])))
 
-    teachers[i] = teacher
+#     teachers[i] = teacher
 
-# Создаем новые предметы
-subjects = {}
-for i in range(10):
-    subject = Subject(id=i, hours=faker.random_int(2, 10), teacher=faker.random_element(teachers.values()),
-                      type=faker.random_int(0, 1), name=faker.random_element(
-            ["Математика", "Информатика", "Физика", "Химия", "Биология", "История", "География", "Литература",
-             "Иностранный язык"]))
-    subjects[i] = subject
+# # Создаем новые предметы
+# subjects = {}
+# for i in range(10):
+#     subject = Subject(id=i, hours=faker.random_int(2, 10), teacher=faker.random_element(teachers.values()),
+#                       type=faker.random_int(0, 1), name=faker.random_element(
+#             ["Математика", "Информатика", "Физика", "Химия", "Биология", "История", "География", "Литература",
+#              "Иностранный язык"]))
+#     subjects[i] = subject
 
-# Добавляем предметы группам
-for group_id, group in groups.items():
-    for _ in range(faker.random_int(2, 4)):
-        subject_id = faker.random_element(list(subjects.keys()))
-        while subject_id in group.subjects.keys():
-            subject_id = faker.random_element(list(subjects.keys()))
-        group.subjects[subject_id] = subjects[subject_id].__copy__()
+# # Добавляем предметы группам
+# for group_id, group in groups.items():
+#     for _ in range(faker.random_int(2, 4)):
+#         subject_id = faker.random_element(list(subjects.keys()))
+#         while subject_id in group.subjects.keys():
+#             subject_id = faker.random_element(list(subjects.keys()))
+#         group.subjects[subject_id] = subjects[subject_id].__copy__()
 
-# Увеличиваем количество занятий по каждому предмету
-for subject_id, subject in subjects.items():
-    subject.lessons *= 2
+# # Увеличиваем количество занятий по каждому предмету
+# for subject_id, subject in subjects.items():
+#     subject.lessons *= 2
 
 rooms = {
     101: Room(101, "Для практики"),
