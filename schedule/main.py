@@ -154,6 +154,31 @@ class Room:
 
 
 class Schedule:
+    '''
+    Класс, представляющий расписание занятий.
+
+    Атрибуты:
+        groups (dict[int, Group]): Словарь, где ключ - идентификатор группы, значение - объект класса Group.
+        rooms (dict[str, Room]): Словарь, где ключ - номер аудитории, значение - объект класса Room.
+        holidays (list[int]): Список выходных дней (0 - понедельник, 6 - воскресенье).
+        teachers (dict[int, Teacher]): Словарь, где ключ - идентификатор преподавателя, значение - объект класса Teacher.
+        schedule (list[tuple]): Список занятий, каждое из которых представлено кортежем (день, пара, группа, предмет, аудитория).
+        days (int): Количество учебных дней в неделе.
+
+    Методы:
+        __init__(self, groups, rooms, holidays, teachers, days):
+            Инициализация экземпляра класса Schedule.
+        generate(self, with_pref=True):
+            Генерация расписания (с учетом или без учета предпочтений).
+        is_free(self, pair, teacher_id, room_id, group_id):
+            Проверка, свободна ли пара для преподавателя, аудитории и группы.
+        _add_pair(self, day, pair, with_pref):
+            Добавление пары в расписание.
+        _check_lecture_compatibility(self, group1, group2):
+            Проверка совместимости групп для лекции (одинаковый курс и год поступления).
+        check(self):
+            Проверка соответствия расписания учебному плану.
+    '''
     def __init__(self, groups: dict, rooms: dict, holidays, teachers: dict, days: int):
         self.groups = groups
         self.rooms = rooms
