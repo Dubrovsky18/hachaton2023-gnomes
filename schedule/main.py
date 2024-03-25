@@ -1,7 +1,21 @@
 # import faker
 
 class Teacher:
+    '''
+    Класс, представляющий учителя.
+
+    Атрибуты:
+        id (int): Идентификатор учителя.
+        name (str): Имя учителя.
+        weekend_day (int): Список дней недели, когда учитель не работает (1 - понедельник, 7 - воскресенье).
+        pref_slots (list[tuple[int, int]]): Список предпочитаемых временных слотов для занятий (пара (день недели, номер пары)).
+        pref_aud (list[str]): Список предпочитаемых аудиторий для занятий.
+        pairs (list[Pair]): Список пар, которые ведёт учитель.
+    '''
     def __init__(self, id, name, weekend_day, pref_slots: [(int, int)], pref_aud: [str]):
+        '''
+        Инициализация экземпляра класса Teacher.
+        '''
         self.id = id
         self.name = name
         self.pref_slots = pref_slots
@@ -10,11 +24,33 @@ class Teacher:
         self.pairs = []
 
     def __eq__(self, other_teacher):
+         '''
+        Сравнение двух экземпляров класса Teacher.
+
+        Args:
+            other_teacher (Teacher): Другой экземпляр класса Teacher.
+
+        Returns:
+            bool: True, если экземпляры эквивалентны, False - в противном случае
+        '''
         return self.id == other_teacher.id and self.name == other_teacher.name
 
 
 class Subject:
+    '''
+    Класс, представляющий урок.
+
+    Атрибуты:
+        id (int): Идентификатор урока.
+        lessons (int): Количество пар по данному предмету, исходя из академических часов.
+        teacher (Teacher): Преподаватель, который ведёт урок.
+        type (string): Тип пары(практика/лекция).
+        name (str): Название дисциплины.
+    '''
     def __init__(self, id, hours, teacher: Teacher, type, name):
+        '''
+        Инициализация экземпляра класса Subject.
+        '''
         self.id = id
         self.lessons = hours // 2
         self.teacher = teacher
@@ -22,9 +58,24 @@ class Subject:
         self.name = name
 
     def __copy__(self):
+        '''
+        Создание копии объекта.
+        
+        Returns:
+            Subject: Копия объекта.
+        '''
         return Subject(self.id, self.lessons * 2, self.teacher, self.type, self.name)
 
     def __eq__(self, other_subject) -> bool:
+         '''
+        Сравнение двух объектов.
+
+        Args:
+            other_subject (Subject): Другой объект класса Subject.
+
+        Returns:
+            bool: True, если объекты эквивалентны, False - в противном случае.
+        '''
         return (self.id == other_subject.id and
                 self.name == other_subject.name and
                 self.lessons == other_subject.lessons and
@@ -33,7 +84,21 @@ class Subject:
 
 
 class Group:
+    '''
+    Класс, представляющий группу студентов.
+
+    Атрибуты:
+        id (int): Идентификатор группы.
+        year (int): Курс группы.
+        admission (int): Год поступления (11 - первый курс, 12 - второй и т.д.).
+        direction (str): Направление обучения.
+        subjects (dict[int, Subject]): Словарь, где ключ - идентификатор дисциплины, значение - объект класса Subject.
+        pairs (list[Pair]): Список уроков, которые посещает группа.
+    '''
     def __init__(self, id, year, admission, direction, subjects: {int: Subject}):
+        '''
+        Инициализация экземпляра класса Group.
+        '''
         self.id = id
         self.year = year
         self.classes = admission
@@ -46,16 +111,45 @@ class Group:
         self.pairs = []
 
     def __eq__(self, other):
+        '''
+        Сравнение двух объектов.
+
+        Args:
+            other (Group): Другой объект класса Group.
+
+        Returns:
+            bool: True, если объекты эквивалентны, False - в противном случае.
+        '''
         return self.id == other.id
 
 
 class Room:
+    '''
+    Класс, представляющий аудиторию.
+
+    Атрибуты:
+        number (str): Номер аудитории.
+        type (str): Тип аудитории (лекционная, компьютерный класс и т.д.).
+        pairs (list[Pair]): Список уроков, которые проводятся в данной аудитории.
+    '''
     def __init__(self, number, type):
+        '''
+        Инициализация экземпляра класса Room.
+        '''
         self.number = number
         self.type = type
         self.pairs = []
 
     def __eq__(self, other):
+        '''
+        Сравнение двух объектов.
+
+        Args:
+            other (Room): Другой объект класса Room.
+
+        Returns:
+            bool: True, если объекты эквивалентны, False - в противном случае.
+        '''
         return self.number == other.number
 
 
